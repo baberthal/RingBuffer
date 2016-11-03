@@ -12,16 +12,13 @@ public enum RingBufferError: Swift.Error {
   ///
   /// - requested: The amount of space that was requested
   /// - available: The number of bytes that are available
-  case insufficientSpace(requested: Int, available: Int)
+  case insufficientSpace(requested: UInt, available: UInt)
 
   /// There is insufficient data in the buffer
   ///
   /// - requested: The amount of space that was requested
   /// - available: The number of bytes that are available
-  case insufficientData(requested: Int, available: Int)
-
-  /// Represents an invalid argument to a function
-  case invalidArgument(String)
+  case insufficientData(requested: UInt, available: UInt)
 
   /// Represents an error that occured while converting a string to UTF8
   case conversionError
@@ -41,9 +38,6 @@ extension RingBufferError: CustomStringConvertible {
     case .insufficientData(requested: let req, available: let avail):
       return "Not enough data in the buffer. " +
              "Buffer has \(avail) bytes of data, but \(req) bytes were requested."
-
-    case .invalidArgument(let m):
-      return "Invalid argument: \(m)"
 
     case .conversionError:
       return "An error occured while converting the byte array to UTF8"
