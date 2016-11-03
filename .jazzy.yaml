@@ -1,14 +1,10 @@
 author: J. Morgan Lieberthal
 github_url: https://github.com/baberthal/RingBuffer
+github_file_prefix: https://github.com/baberthal/RingBuffer/tree/master
 
 theme: fullwidth
 clean: true
-min_acl: private
-docset_path: RingBuffer.docset
-
-readme: README.md
+min_acl: internal
 
 skip_undocumented: false
 hide_documentation_coverage: false
-
-xcodebuild_arguments: [-scheme, RingBuffer]

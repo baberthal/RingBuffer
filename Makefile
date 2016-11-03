@@ -23,12 +23,13 @@ SWIFT_TEST := $(ENVIRONMENT) $(SWIFT) test $(SWIFT_CLI_FLAGS)
 RM_R := $(RM) -r
 JAZZY = /Users/morgan/.rvm/gems/ruby-2.3.1@global/bin/jazzy
 OPEN = /usr/bin/open
+PKG_CONFIG = /usr/local/bin/pkg-config
+SWIFT_LINT = /usr/local/bin/swiftlint
+GIT = /usr/local/bin/git
 
 ####################
 #   DEPENDENCIES   #
 ####################
-
-
 
 ####################################
 #  Build Config (debug | release)  #
@@ -66,12 +67,18 @@ XCODEPROJ_CFLAGS  =
 XCODEPROJ_LDFLAGS = -Xlinker '-framework CoreFoundation'
 XCODEPROJ_FLAGS   = $(XCODEPROJ_CFLAGS) $(XCODEPROJ_LDFLAGS)
 
+###########################
+#  Documentation Targets  #
+###########################
+MODULES = RingBuffer
+DOC_TARGETS = $(addprefix docs-,$(MODULES))
+
 ################################################################################
 #                                   TARGETS                                    #
 ################################################################################
 .PHONY: all build build-debug build-release test clean \
-  distclean fetch update-deps xcodeproj docs read-docs clean-xcode \
-  regenerate-xcode release run
+  distclean fetch update-deps xcodeproj docs read-docs \
+  clean-docs clean-xcode  regenerate-xcode release run
 
 all: build
 
@@ -81,11 +88,16 @@ release: build-release docs
 
 print-%: ; @echo $*=$($*)
 
-docs/index.html: $(PROJECT_NAME).xcodeproj
-	$(JAZZY)
+docs: $(DOC_TARGETS)
+	$(RM_R) build
+	$(GIT) add docs
+	$(GIT) commit --message "Regenerate Documentation"
 
-docs: $(PROJECT_NAME).xcodeproj
-	$(JAZZY)
+$(DOC_TARGETS): $(PROJECT_NAME).xcodeproj | clean-docs
+	$(JAZZY) --module $(subst docs-,,$@) \
+	  --xcodebuild-arguments -target,$(subst docs-,,$@) \
+	  --readme Sources/$(subst docs-,,$@)/README.md \
+	  --output docs/$(subst docs-,,$@)
 
 read-docs: docs/index.html
 	$(OPEN) ./docs/index.html
@@ -97,7 +109,7 @@ test:
 	$(SWIFT_TEST) $(SPM_FLAGS)
 
 clean:
-	$(RM_R) *.o *.dylib *.a ./.build ./.dist ./docs
+	$(RM_R) *.o *.dylib *.a ./{,.}build ./.dist ./docs
 
 clean-xcode:
 	$(RM_R) $(PROJECT_NAME).xcodeproj
@@ -120,5 +132,17 @@ xcopen: $(PROJECT_NAME).xcodeproj
 
 xcreopen: regenerate-xcode xcopen
 
-$(PROJECT_NAME).xcodeproj: | fetch
+$(PROJECT_NAME).xcodeproj: Packages
 	$(SWIFT_PKG) generate-xcodeproj $(SPM_FLAGS) $(XCODEPROJ_FLAGS)
+
+Packages:
+	$(SWIFT_PKG) fetch
+
+lint:
+	$(SWIFT_LINT)
+
+lint-autocorrect:
+	$(SWIFT_LINT) autocorrect
+
+lint-list-rules:
+	$(SWIFT_LINT) rules
