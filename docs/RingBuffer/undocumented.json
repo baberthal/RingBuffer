@@ -1,0 +1,12 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 159,
+      "symbol": "RingBuffer.append(contentsOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/morgan/projects/swift/RingBuffer"
+}
