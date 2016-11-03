@@ -14,6 +14,10 @@ import Dispatch
 /// The ring buffer is agnostic about the data type it stores, and deals
 /// directly with bytes.
 ///
+/// - note: The buffer internally rounds up `capacity` to the nearest page size. 
+///   To determine the actual capacity of the buffer, check the return value of `capacity`
+///   after initialization.
+///
 /// - note: This class is thread-safe.
 ///
 /// - seealso: [Circular Buffer on Wikipedia](https://en.wikipedia.org/wiki/Circular_buffer)
@@ -22,8 +26,8 @@ public final class RingBuffer {
   /// capacity is greater than 0.
   public static let defaultCapacity: UInt = 4096
 
-  /// Absolute maximum buffer size.  4 Terabytes ought to be enough...
-  public static let absoluteMaximumCapacity: UInt = (1 << 42) - 1
+  /// Absolute maximum buffer size.  4 Terabytes on 64-bit, 2 Gigabytes on 32-bit.
+  public static let absoluteMaximumCapacity: UInt = RINGBUFFER_MAX_SIZE
 
   /// The length of the buffer
   public var count: Int {
@@ -145,7 +149,6 @@ public final class RingBuffer {
   /// Append a sequence of bytes to the ring buffer
   ///
   /// - parameter bytes: The sequence of bytes to add to the buffer
-  /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
   /// - note: This will silently fail if an error occurs.
   ///   To raise the error, use one of the `write()` methods.
   public func append(contentsOf bytes: ContiguousArray<Int8>) {
@@ -156,6 +159,12 @@ public final class RingBuffer {
     }
   }
 
+  /// Append a sequence of bytes to the ring buffer
+  ///
+  /// - parameter bytes: The sequence of bytes to add to the buffer
+  /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
+  /// - note: This will silently fail if an error occurs.
+  ///   To raise the error, use one of the `write()` methods.
   public func append<S: Sequence>(contentsOf: S) where S.Iterator.Element == UInt8 {
     for byte in contentsOf {
       self.append(byte)
@@ -195,7 +204,7 @@ public final class RingBuffer {
 
     self.dispatchQueue.sync {
       self.endAddress.assign(from: bytes, count: Int(count))
-      commitWrite(count: count)
+      self.commitWrite(count: count)
     }
 
     return Int(count)
@@ -253,17 +262,19 @@ public final class RingBuffer {
       throw RingBufferError.insufficientData(requested: count, available: availableData)
     }
 
-    let buffer: UnsafeBufferPointer<UInt8> = getUnsafeBufferPointer(count: self.distance)
+    return dispatchQueue.sync(execute: {
+      let buffer: UnsafeBufferPointer<UInt8> = getUnsafeBufferPointer(count: self.distance)
 
-    data.append(buffer)
-    
-    commitRead(count: count)
+      data.append(buffer)
 
-    if self.end == self.start {
-      reset()
-    }
-
-    return Int(count)
+      self.commitRead(count: count)
+      
+      if self.end == self.start {
+        self.reset()
+      }
+      
+      return Int(count)
+    })
   }
 
   /// Get a string from the buffer 
@@ -277,24 +288,35 @@ public final class RingBuffer {
       throw RingBufferError.insufficientData(requested: amount, available: availableData)
     }
 
-    let buffer: UnsafeBufferPointer<UInt8> = getUnsafeBufferPointer(count: Int(amount))
+    return try dispatchQueue.sync(execute: {
+      let buffer: UnsafeBufferPointer<UInt8> = self.getUnsafeBufferPointer(count: Int(amount))
+      
+      guard let result = String(bytes: buffer, encoding: .utf8),
+            UInt(result.lengthOfBytes(using: .utf8)) == amount else {
+              throw RingBufferError.conversionError
+      }
 
-    guard let result = String(bytes: buffer, encoding: .utf8),
-              UInt(result.lengthOfBytes(using: .utf8)) == amount else {
-      throw RingBufferError.conversionError
-    }
+      self.commitRead(count: amount)
+      
+      guard self.availableData >= 0 else {
+        throw RingBufferError.internal("Error occured while commiting the read to the buffer")
+      }
+      
+      if self.start == self.end {
+        self.reset()
+      }
+      
+      return result
+    })
+  }
 
-    commitRead(count: amount)
-
-    guard availableData >= 0 else {
-      throw RingBufferError.internal("Error occured while commiting the read to the buffer")
-    }
-
-    if self.start == self.end {
-      reset()
-    }
-
-    return result
+  /// Get a string from the buffer.  This is a shortcut for `gets(UInt(myInt))`.
+  /// 
+  /// - parameter amount: The number of bytes to read
+  /// - precondition: `amount` is greater than 0
+  public func gets(_ amount: Int) throws -> String {
+    precondition(amount > 0)
+    return try gets(UInt(amount))
   }
 
   /// Calls a closure with a pointer to the buffer's contiguous storage.
@@ -382,11 +404,21 @@ public final class RingBuffer {
     return try body(UnsafePointer(self.elementPointer))
   }
 
+  /// Clear the buffer of any stored data
+  public func clear() {
+    dispatchQueue.sync {
+      self.commitRead(count: self.availableData)
+    }
+  }
+
   // MARK: - Private Functions
 
   /// Commit a write into the buffer, moving the `start` position
   private func commitRead(count: UInt) {
     self.start = (self.start + count) % self.capacity
+    if self.start == self.end {
+      self.reset()
+    }
   }
 
   /// Commit a write into the buffer, moving the `end` position
@@ -402,7 +434,7 @@ public final class RingBuffer {
   }
 
   /// Reset the buffer
-  func reset() {
+  private func reset() {
     self.start = 0
     self.end = 0
   }
@@ -431,10 +463,6 @@ extension RingBuffer: CustomStringConvertible, CustomDebugStringConvertible, Cus
       children.append((label: "pointer", value: bytes))
     }
 
-    //    if byteCount < 64 {
-    //      children.append((label: "bytes", value: self[0..<byteCount].map { $0 }))
-    //    }
-
     let m = Mirror(self, children: children, displayStyle: Mirror.DisplayStyle.struct)
     return m
   }
@@ -457,9 +485,32 @@ extension RingBuffer {
 
 // MARK: - Implementation Helpers
 
-fileprivate let CHUNK_SIZE:     UInt = 1 << 29
-fileprivate let LOW_THRESHOLD:  UInt = 1 << 20
-fileprivate let HIGH_THRESHOLD: UInt = 1 << 32
+#if arch(x86_64) || arch(arm64) // we are on a 64-bit system
+  /// Absolute maximum buffer size: 4 TB on 64-bit.
+  fileprivate let RINGBUFFER_MAX_SIZE: UInt = (1 << 42) - 1
+
+  /// Chunk size of our memory allocations
+  fileprivate let CHUNK_SIZE:     UInt = 1 << 29
+
+  /// Low threshold of memory allocation
+  fileprivate let LOW_THRESHOLD:  UInt = 1 << 20
+
+  /// High threshold of memory allocation
+  fileprivate let HIGH_THRESHOLD: UInt = 1 << 32
+
+#elseif arch(arm) || arch(i386) // we are on a 32-bit system
+  /// Absolute maximum buffer size: 2 GB on 32-bit.
+  fileprivate let RINGBUFFER_MAX_SIZE: UInt = (1 << 31) - 1
+
+  /// Chunk size of our memory allocations
+  fileprivate let CHUNK_SIZE:     UInt = 1 << 26
+  
+  /// Low threshold of memory allocation
+  fileprivate let LOW_THRESHOLD:  UInt = 1 << 20
+  
+  /// High threshold of memory allocation
+  fileprivate let HIGH_THRESHOLD: UInt = 1 << 29
+#endif
 
 @inline(__always)
 fileprivate func roundUpCapacity(_ capacity: UInt) -> UInt {

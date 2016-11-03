@@ -92,9 +92,10 @@ class RingBufferTests: XCTestCase {
     do {
       let _ = try ringBuffer.gets(UInt(idx + 4))
     } catch let error as RingBufferError {
-      let expectedMessage = "Not enough data in the buffer. " +
-                            "Buffer has \(idx) bytes of data, but \(idx + 4) bytes were requested."
-      XCTAssert(error.message == expectedMessage, "Wrong error message")
+      switch error {
+      case .insufficientData(requested: UInt(idx + 4), available: UInt(idx)): XCTAssert(true)
+      default: XCTFail("Wrong error")
+      }
     } catch {
       XCTFail("Wrong error")
     }
@@ -141,9 +142,10 @@ class RingBufferTests: XCTestCase {
     do {
       try ringBuffer.read(into: &data, count: strLen + 4)
     } catch let error as RingBufferError {
-      let expectedMessage = "Not enough data in the buffer. Buffer has \(strLen) bytes of data, " +
-                            "but \(strLen + 4) bytes were requested."
-      XCTAssert(error.message == expectedMessage)
+      switch error {
+      case .insufficientData(requested: UInt(strLen + 4), available: UInt(strLen)): XCTAssert(true)
+      default: XCTFail("Wrong error")
+      }
     } catch {
       XCTFail("Wrong error")
     }
@@ -181,11 +183,12 @@ class RingBufferTests: XCTestCase {
 
     ringBuffer.append(testData.first!)
 
-    XCTAssert(ringBuffer.availableData == 1, "buffer should have 1 byte available")
+    XCTAssert(ringBuffer.availableData == 1,
+              "buffer should have 1 byte available (has \(ringBuffer.availableData))")
     XCTAssertFalse(ringBuffer.isEmpty, "Buffer should not be empty")
 
     let back = try! ringBuffer.gets(1)
-    XCTAssert(back == "h", "Got the wrong byte back")
+    XCTAssert(back == "h", "Got the wrong byte back: \(back)")
   }
   
   func testAppendByteSequence() {
@@ -214,9 +217,10 @@ class RingBufferTests: XCTestCase {
     XCTAssert(ringBuffer.availableData == UInt(testData.count),
               "Wrong number of bytes written \(ringBuffer.availableData)")
 
-    ringBuffer.reset()
+    ringBuffer.clear()
 
-    XCTAssert(ringBuffer.availableData == 0, "Should now be empty")
+    XCTAssert(ringBuffer.availableData == 0,
+              "Should now be empty (has \(ringBuffer.availableData) bytes available)")
     XCTAssert(ringBuffer.isEmpty, "Should be empty")
   }
 
