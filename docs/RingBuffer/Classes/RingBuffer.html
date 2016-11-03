@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
           RingBuffer Docs
         </a>
-         (97% documented)
+         (100% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -77,7 +77,16 @@ directly with bytes.</p>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
-    <p>This class is thread-safe.</p>
+    <p>The buffer internally rounds up <code>capacity</code> to the nearest page size. 
+To determine the actual capacity of the buffer, check the return value of <code>capacity</code>
+after initialization.</p>
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This class is thread-safe. Write operations are performed asynchronously, while
+read operations are performed synchronously.</p>
 
 </div>
 
@@ -120,7 +129,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L23">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L28">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -138,19 +147,19 @@ capacity is greater than 0.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Absolute maximum buffer size.  4 Terabytes ought to be enough&hellip;</p>
+                        <p>Absolute maximum buffer size.  4 Terabytes on 64-bit, 2 Gigabytes on 32-bit.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">absoluteMaximumCapacity</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">absoluteMaximumCapacity</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kt">RINGBUFFER_MAX_SIZE</span></code></pre>
 
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L26">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L31">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -180,7 +189,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L29-L31">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L34-L36">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -210,7 +219,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L34">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L39">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -240,7 +249,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L37">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L42">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -270,7 +279,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L40">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L45">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -300,7 +309,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L43-L46">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L48-L51">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -330,7 +339,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L49-L52">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L54-L57">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -360,7 +369,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L55-L57">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L60-L62">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -390,7 +399,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L60-L62">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L65-L67">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -420,7 +429,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L65-L67">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L70-L72">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -481,7 +490,7 @@ capacity is greater than 0.</p>
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L95-L107">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L100-L112">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -511,7 +520,7 @@ capacity is greater than 0.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L110-L115">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L115-L120">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -579,7 +588,7 @@ To raise the error, use one of the <code>write()</code> methods.
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L124-L131">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L129-L136">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -642,7 +651,7 @@ To raise the error, use one of the <code>write()</code> methods.
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L139-L143">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L144-L148">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -661,12 +670,6 @@ To raise the error, use one of the <code>write()</code> methods.
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Append a sequence of bytes to the ring buffer</p>
-
-<div class="aside aside-precondition">
-    <p class="aside-title">Precondition</p>
-    MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
-
-</div>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
@@ -705,7 +708,7 @@ To raise the error, use one of the <code>write()</code> methods.
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L151-L157">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L155-L161">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -723,19 +726,52 @@ To raise the error, use one of the <code>write()</code> methods.
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Append a sequence of bytes to the ring buffer</p>
+
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This will silently fail if an error occurs.
+To raise the error, use one of the <code>write()</code> methods.
+
+</div>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">RingBuffer</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">append</span><span class="o">&lt;</span><span class="kt">S</span><span class="p">:</span> <span class="kt">Sequence</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">contentsOf</span><span class="p">:</span> <span class="kt">S</span><span class="p">)</span> <span class="k">where</span> <span class="kt">S</span><span class="o">.</span><span class="kt">Iterator</span><span class="o">.</span><span class="kt">Element</span> <span class="o">==</span> <span class="kt">UInt8</span></code></pre>
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bytes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The sequence of bytes to add to the buffer</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L159-L163">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L169-L173">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -792,7 +828,7 @@ To raise the error, use one of the <code>write()</code> methods.
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L170-L172">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L180-L182">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -872,7 +908,7 @@ To raise the error, use one of the <code>write()</code> methods.
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L182-L202">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L192-L212">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -946,7 +982,7 @@ To raise the error, use one of the <code>write()</code> methods.
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L211-L213">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L221-L223">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1007,7 +1043,7 @@ To raise the error, use one of the <code>write()</code> methods.
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L221-L228">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L231-L238">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1068,7 +1104,7 @@ To raise the error, use one of the <code>write()</code> methods.
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L236-L240">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L246-L250">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1148,7 +1184,7 @@ To raise the error, use one of the <code>write()</code> methods.
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L250-L267">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L260-L277">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1204,7 +1240,7 @@ To raise the error, use one of the <code>write()</code> methods.
                         </table>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L273-L298">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L283-L308">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1285,7 +1321,7 @@ let sum = numbers.withUnsafeBufferPointer { buffer -&gt; Int in
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L328-L333">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L338-L343">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1375,7 +1411,7 @@ may not appear to have its correct value.  Instead, use only the
 
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L367-L372">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L377-L382">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1414,7 +1450,7 @@ outside of the lifetime of the call to the closure.
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L378-L383">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L388-L393">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1455,7 +1491,7 @@ outside of the lifetime of the call to the closure.
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L405-L408">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L415-L418">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1489,7 +1525,7 @@ outside of the lifetime of the call to the closure.
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L416-L418">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L426-L428">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1519,7 +1555,7 @@ outside of the lifetime of the call to the closure.
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L421-L423">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L431-L433">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
@@ -1549,7 +1585,7 @@ outside of the lifetime of the call to the closure.
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L425-L440">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L435-L450">Show on GitHub</a>
                       </div>
                     </section>
                   </div>

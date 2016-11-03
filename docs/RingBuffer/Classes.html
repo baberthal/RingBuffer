@@ -19,7 +19,7 @@
         <a class="header-link" href="index.html">
           RingBuffer Docs
         </a>
-         (97% documented)
+         (100% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -92,7 +92,16 @@ directly with bytes.</p>
 
 <div class="aside aside-note">
     <p class="aside-title">Note</p>
-    <p>This class is thread-safe.</p>
+    <p>The buffer internally rounds up <code>capacity</code> to the nearest page size. 
+To determine the actual capacity of the buffer, check the return value of <code>capacity</code>
+after initialization.</p>
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This class is thread-safe. Write operations are performed asynchronously, while
+read operations are performed synchronously.</p>
 
 </div>
 
@@ -113,7 +122,7 @@ directly with bytes.</p>
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L20-L409">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer.swift#L25-L419">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
