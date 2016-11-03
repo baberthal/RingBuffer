@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (100% documented)
+         (90% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -50,10 +50,32 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210CHUNK_SIZESu">CHUNK_SIZE</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B214HIGH_THRESHOLDSu">HIGH_THRESHOLD</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B213LOW_THRESHOLDSu">LOW_THRESHOLD</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RingBufferError.html">RingBufferError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:F10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B215roundUpCapacityFSuSu">roundUpCapacity(_:)</a>
               </li>
             </ul>
           </li>
@@ -82,9 +104,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FO10RingBuffer15RingBufferError17insufficientSpaceFMS0_FT9requestedSi9availableSi_S0_"></a>
+                    <a name="/s:FO10RingBuffer15RingBufferError17insufficientSpaceFMS0_FT9requestedSu9availableSu_S0_"></a>
                     <a name="//apple_ref/swift/Element/insufficientSpace" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FO10RingBuffer15RingBufferError17insufficientSpaceFMS0_FT9requestedSi9availableSi_S0_">insufficientSpace</a>
+                    <a class="token" href="#/s:FO10RingBuffer15RingBufferError17insufficientSpaceFMS0_FT9requestedSu9availableSu_S0_">insufficientSpace</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -104,7 +126,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">insufficientSpace</span><span class="p">(</span><span class="nv">requested</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">insufficientSpace</span><span class="p">(</span><span class="nv">requested</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -118,9 +140,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FO10RingBuffer15RingBufferError16insufficientDataFMS0_FT9requestedSi9availableSi_S0_"></a>
+                    <a name="/s:FO10RingBuffer15RingBufferError16insufficientDataFMS0_FT9requestedSu9availableSu_S0_"></a>
                     <a name="//apple_ref/swift/Element/insufficientData" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FO10RingBuffer15RingBufferError16insufficientDataFMS0_FT9requestedSi9availableSi_S0_">insufficientData</a>
+                    <a class="token" href="#/s:FO10RingBuffer15RingBufferError16insufficientDataFMS0_FT9requestedSu9availableSu_S0_">insufficientData</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -140,38 +162,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">insufficientData</span><span class="p">(</span><span class="nv">requested</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FO10RingBuffer15RingBufferError15invalidArgumentFMS0_FSSS0_"></a>
-                    <a name="//apple_ref/swift/Element/invalidArgument" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FO10RingBuffer15RingBufferError15invalidArgumentFMS0_FSSS0_">invalidArgument</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Represents an invalid argument to a function</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">invalidArgument</span><span class="p">(</span><span class="kt">String</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="nf">insufficientData</span><span class="p">(</span><span class="nv">requested</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">,</span> <span class="nv">available</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -306,7 +297,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">J. Morgan Lieberthal</a>. All rights reserved. (Last updated: 2016-11-01)</p>
+      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">J. Morgan Lieberthal</a>. All rights reserved. (Last updated: 2016-11-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

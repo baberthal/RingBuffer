@@ -20,7 +20,7 @@
         <a class="header-link" href="../index.html">
            Docs
         </a>
-         (100% documented)
+         (90% documented)
       </p>
     
         <p class="header-col header-col--secondary">
@@ -50,10 +50,32 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210CHUNK_SIZESu">CHUNK_SIZE</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B214HIGH_THRESHOLDSu">HIGH_THRESHOLD</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Global Variables.html#/s:v10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B213LOW_THRESHOLDSu">LOW_THRESHOLD</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Enums.html">Enums</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/RingBufferError.html">RingBufferError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Functions.html#/s:F10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B215roundUpCapacityFSuSu">roundUpCapacity(_:)</a>
               </li>
             </ul>
           </li>
@@ -93,14 +115,62 @@ directly with bytes.</p>
         <section class="section">
           <div class="section-content">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Public%20Properties"></a>
-                <a name="//apple_ref/swift/Section/Public Properties" class="dashAnchor"></a>
-                <a href="#/Public%20Properties">
-                  <h3 class="section-name">Public Properties</h3>
-                </a>
-              </div>
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC10RingBuffer10RingBuffer15defaultCapacitySu"></a>
+                    <a name="//apple_ref/swift/Variable/defaultCapacity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC10RingBuffer10RingBuffer15defaultCapacitySu">defaultCapacity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Default buffer size.  Unsigned so the compiler can check that the 
+capacity is greater than 0.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">defaultCapacity</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="mi">4096</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:ZvC10RingBuffer10RingBuffer23absoluteMaximumCapacitySu"></a>
+                    <a name="//apple_ref/swift/Variable/absoluteMaximumCapacity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:ZvC10RingBuffer10RingBuffer23absoluteMaximumCapacitySu">absoluteMaximumCapacity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Absolute maximum buffer size.  4 Terabytes ought to be enough&hellip;</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">absoluteMaximumCapacity</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">42</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -121,7 +191,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -131,9 +201,36 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer5startSi"></a>
+                    <a name="/s:vC10RingBuffer10RingBuffer8capacitySu"></a>
+                    <a name="//apple_ref/swift/Property/capacity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer8capacitySu">capacity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The capacity of the buffer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">capacity</span><span class="p">:</span> <span class="kt">UInt</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer10RingBuffer5startSu"></a>
                     <a name="//apple_ref/swift/Property/start" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer5startSi">start</a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer5startSu">start</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -148,7 +245,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">start</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">start</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
 
                         </div>
                       </div>
@@ -158,9 +255,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer3endSi"></a>
+                    <a name="/s:vC10RingBuffer10RingBuffer3endSu"></a>
                     <a name="//apple_ref/swift/Property/end" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer3endSi">end</a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer3endSu">end</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -175,7 +272,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
 
                         </div>
                       </div>
@@ -185,36 +282,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer6lengthSi"></a>
-                    <a name="//apple_ref/swift/Property/length" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer6lengthSi">length</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The length of the buffer</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">length</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer13availableDataSi"></a>
+                    <a name="/s:vC10RingBuffer10RingBuffer13availableDataSu"></a>
                     <a name="//apple_ref/swift/Property/availableData" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer13availableDataSi">availableData</a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer13availableDataSu">availableData</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -229,7 +299,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">availableData</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">availableData</span><span class="p">:</span> <span class="kt">UInt</span></code></pre>
 
                         </div>
                       </div>
@@ -239,9 +309,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer14availableSpaceSi"></a>
+                    <a name="/s:vC10RingBuffer10RingBuffer14availableSpaceSu"></a>
                     <a name="//apple_ref/swift/Property/availableSpace" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer14availableSpaceSi">availableSpace</a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer14availableSpaceSu">availableSpace</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -256,7 +326,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">availableSpace</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">availableSpace</span><span class="p">:</span> <span class="kt">UInt</span></code></pre>
 
                         </div>
                       </div>
@@ -303,7 +373,7 @@ directly with bytes.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns true if the buffer is empty</p>
+                        <p>Returns true if the buffer is empty, or if it contains 1 NULL byte</p>
 
                       </div>
                       <div class="declaration">
@@ -320,9 +390,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer12startAddressGSpVs5UInt8_"></a>
-                    <a name="//apple_ref/swift/Property/startAddress" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer12startAddressGSpVs5UInt8_">startAddress</a>
+                    <a name="/s:vC10RingBuffer10RingBuffer14elementPointerGSpVs5UInt8_"></a>
+                    <a name="//apple_ref/swift/Property/elementPointer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer14elementPointerGSpVs5UInt8_">elementPointer</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -330,41 +400,14 @@ directly with bytes.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The start address of the buffer</p>
+                        <p>The base address of the buffer</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">startAddress</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC10RingBuffer10RingBuffer10endAddressGSpVs5UInt8_"></a>
-                    <a name="//apple_ref/swift/Property/endAddress" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer10endAddressGSpVs5UInt8_">endAddress</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The end address of the buffer</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">endAddress</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">elementPointer</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -385,9 +428,63 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B24_ptrGSpVs5UInt8_"></a>
-                    <a name="//apple_ref/swift/Property/_ptr" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B24_ptrGSpVs5UInt8_">_ptr</a>
+                    <a name="/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211baseAddressGSQGSpVs5UInt8__"></a>
+                    <a name="//apple_ref/swift/Property/baseAddress" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211baseAddressGSQGSpVs5UInt8__">baseAddress</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The base address of the buffer.  This should not change</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="k">var</span> <span class="nv">baseAddress</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210endAddressGSpVs5UInt8_"></a>
+                    <a name="//apple_ref/swift/Property/endAddress" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210endAddressGSpVs5UInt8_">endAddress</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The end address of the buffer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="k">var</span> <span class="nv">endAddress</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B214storagePointerGSQSv_"></a>
+                    <a name="//apple_ref/swift/Property/storagePointer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B214storagePointerGSQSv_">storagePointer</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -402,7 +499,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">private</span> <span class="k">var</span> <span class="nv">_ptr</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="k">var</span> <span class="nv">storagePointer</span><span class="p">:</span> <span class="kt">UnsafeMutableRawPointer</span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -477,9 +574,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC10RingBuffer10RingBuffercFT8capacitySi_S0_"></a>
+                    <a name="/s:FC10RingBuffer10RingBuffercFT8capacitySu_S0_"></a>
                     <a name="//apple_ref/swift/Method/init(capacity:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC10RingBuffer10RingBuffercFT8capacitySi_S0_">init(capacity:)</a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffercFT8capacitySu_S0_">init(capacity:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -494,7 +591,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">capacity</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">capacity</span><span class="p">:</span> <span class="kt">UInt</span> <span class="o">=</span> <span class="kt">RingBuffer</span><span class="o">.</span><span class="n"><a href="../Classes/RingBuffer.html#/s:ZvC10RingBuffer10RingBuffer15defaultCapacitySu">defaultCapacity</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -562,6 +659,261 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer6appendFVs5UInt8T_"></a>
+                    <a name="//apple_ref/swift/Method/append(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer6appendFVs5UInt8T_">append(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Append a byte to the ring buffer</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This will silently fail if an error occurs.<br>
+To raise the error, use one of the <code>write()</code> methods.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="n">_</span> <span class="nv">byte</span><span class="p">:</span> <span class="kt">UInt8</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>byte</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The byte to add to the buffer</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer6appendFT10contentsOfGVs15ContiguousArrayVs5UInt8__T_"></a>
+                    <a name="//apple_ref/swift/Method/append(contentsOf:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer6appendFT10contentsOfGVs15ContiguousArrayVs5UInt8__T_">append(contentsOf:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Append a sequence of bytes to the ring buffer</p>
+
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This will silently fail if an error occurs.
+To raise the error, use one of the <code>write()</code> methods.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="n">contentsOf</span> <span class="nv">bytes</span><span class="p">:</span> <span class="kt">ContiguousArray</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bytes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The sequence of bytes to add to the buffer</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer6appendFT10contentsOfGVs15ContiguousArrayVs4Int8__T_"></a>
+                    <a name="//apple_ref/swift/Method/append(contentsOf:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer6appendFT10contentsOfGVs15ContiguousArrayVs4Int8__T_">append(contentsOf:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Append a sequence of bytes to the ring buffer</p>
+
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This will silently fail if an error occurs.
+To raise the error, use one of the <code>write()</code> methods.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="n">contentsOf</span> <span class="nv">bytes</span><span class="p">:</span> <span class="kt">ContiguousArray</span><span class="o">&lt;</span><span class="kt">Int8</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>bytes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The sequence of bytes to add to the buffer</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer6appenduRxs8SequenceWx8Iterator7Element_zVs5UInt8rFT10contentsOfx_T_"></a>
+                    <a name="//apple_ref/swift/Method/append(contentsOf:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer6appenduRxs8SequenceWx8Iterator7Element_zVs5UInt8rFT10contentsOfx_T_">append(contentsOf:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">RingBuffer</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer6appendFT4dataV10Foundation4Data_T_"></a>
+                    <a name="//apple_ref/swift/Method/append(data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer6appendFT4dataV10Foundation4Data_T_">append(data:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Append the contents of a <code>Data</code> structure to the buffer</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This will silently fail if an error occurs.
+To raise the error, use one of the <code>write()</code> methods.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data structure to append to the buffer</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:FC10RingBuffer10RingBuffer5writeFzT4fromGSPVs5UInt8_5countSi_Si"></a>
                     <a name="//apple_ref/swift/Method/write(from:count:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:FC10RingBuffer10RingBuffer5writeFzT4fromGSPVs5UInt8_5countSi_Si">write(from:count:)</a>
@@ -574,6 +926,12 @@ directly with bytes.</p>
                       <div class="abstract">
                         <p>Write into the buffer, given pointer data and length</p>
 
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    <code>count &gt;= 0</code>
+
+</div>
+
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     RingBufferError if an error was encountered
@@ -585,7 +943,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">write</span><span class="p">(</span><span class="n">from</span> <span class="nv">bytes</span><span class="p">:</span> <span class="kt">UnsafePointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">write</span><span class="p">(</span><span class="n">from</span> <span class="nv">bytes</span><span class="p">:</span> <span class="kt">UnsafePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -656,7 +1014,7 @@ directly with bytes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">write</span><span class="p">(</span><span class="n">from</span> <span class="nv">buffer</span><span class="p">:</span> <span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">write</span><span class="p">(</span><span class="n">from</span> <span class="nv">buffer</span><span class="p">:</span> <span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
 
                         </div>
                       </div>
@@ -832,6 +1190,12 @@ directly with bytes.</p>
                       <div class="abstract">
                         <p>Read <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer5countSi">count</a></code> bytes from the buffer, into <code>into</code></p>
 
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer5countSi">count</a></code> is greater than 0, and less than <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer13availableDataSu">availableData</a></code>
+
+</div>
+
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
     RingBufferError if an error was encountered
@@ -891,9 +1255,9 @@ directly with bytes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC10RingBuffer10RingBuffer4getsFzSiSS"></a>
+                    <a name="/s:FC10RingBuffer10RingBuffer4getsFzSuSS"></a>
                     <a name="//apple_ref/swift/Method/gets(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer4getsFzSiSS">gets(_:)</a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer4getsFzSuSS">gets(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -903,12 +1267,18 @@ directly with bytes.</p>
                       <div class="abstract">
                         <p>Get a string from the buffer </p>
 
+<div class="aside aside-precondition">
+    <p class="aside-title">Precondition</p>
+    <code>amount</code> is greater than 0
+
+</div>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">gets</span><span class="p">(</span><span class="n">_</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">gets</span><span class="p">(</span><span class="n">_</span> <span class="nv">amount</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -980,7 +1350,7 @@ let sum = numbers.withUnsafeBufferPointer { buffer -&gt; Int in
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span>
   <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
 
                         </div>
@@ -1067,7 +1437,7 @@ may not appear to have its correct value.  Instead, use only the
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeMutableBufferPointer</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span>
-    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeMutableBufferPointer</span><span class="o">&lt;</span><span class="kt">Byte</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeMutableBufferPointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">R</span>
   <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">R</span></code></pre>
 
                         </div>
@@ -1100,6 +1470,42 @@ may not appear to have its correct value.  Instead, use only the
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBuffer15withUnsafeBytesurFzFzGSPVs5UInt8_xx"></a>
+                    <a name="//apple_ref/swift/Method/withUnsafeBytes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBuffer15withUnsafeBytesurFzFzGSPVs5UInt8_xx">withUnsafeBytes(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Access the bytes in the data.</p>
+
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    The byte pointer argument should not be stored and used
+outside of the lifetime of the call to the closure.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">withUnsafeBytes</span><span class="o">&lt;</span><span class="kt">ResultType</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span>
+  <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -1114,9 +1520,9 @@ may not appear to have its correct value.  Instead, use only the
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210commitReadFT5countSi_T_"></a>
+                    <a name="/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210commitReadFT5countSu_T_"></a>
                     <a name="//apple_ref/swift/Method/commitRead(count:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210commitReadFT5countSi_T_">commitRead(count:)</a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B210commitReadFT5countSu_T_">commitRead(count:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1124,14 +1530,14 @@ may not appear to have its correct value.  Instead, use only the
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Commit a write into the buffer, moving the <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer5startSi">start</a></code> position</p>
+                        <p>Commit a write into the buffer, moving the <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer5startSu">start</a></code> position</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">commitRead</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">commitRead</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -1141,9 +1547,9 @@ may not appear to have its correct value.  Instead, use only the
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211commitWriteFT5countSi_T_"></a>
+                    <a name="/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211commitWriteFT5countSu_T_"></a>
                     <a name="//apple_ref/swift/Method/commitWrite(count:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211commitWriteFT5countSi_T_">commitWrite(count:)</a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B211commitWriteFT5countSu_T_">commitWrite(count:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -1151,14 +1557,41 @@ may not appear to have its correct value.  Instead, use only the
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Commit a write into the buffer, moving the <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer3endSi">end</a></code> position</p>
+                        <p>Commit a write into the buffer, moving the <code><a href="../Classes/RingBuffer.html#/s:vC10RingBuffer10RingBuffer3endSu">end</a></code> position</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">commitWrite</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="nf">commitWrite</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B222getUnsafeBufferPointerurFT5countSi_GSRx_"></a>
+                    <a name="//apple_ref/swift/Method/getUnsafeBufferPointer(count:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer10RingBufferP33_4E121BBFCEF0AB6F48552CC5017A91B222getUnsafeBufferPointerurFT5countSi_GSRx_">getUnsafeBufferPointer(count:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get an UnsafeBufferPointer to the storage of the RingBuffer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">private</span> <span class="kd">func</span> <span class="n">getUnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -1194,13 +1627,98 @@ may not appear to have its correct value.  Instead, use only the
                 </li>
               </ul>
             </div>
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer10RingBuffer11descriptionSS"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer11descriptionSS">description</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human-readable description of the data</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer10RingBuffer16debugDescriptionSS"></a>
+                    <a name="//apple_ref/swift/Property/debugDescription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer10RingBuffer16debugDescriptionSS">debugDescription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human-readable debug description of the data</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">debugDescription</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vPs17CustomReflectable12customMirrorVs6Mirror"></a>
+                    <a name="//apple_ref/swift/Property/customMirror" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vPs17CustomReflectable12customMirrorVs6Mirror">customMirror</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A human-readable debug description of the data</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">customMirror</span><span class="p">:</span> <span class="kt">Mirror</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">J. Morgan Lieberthal</a>. All rights reserved. (Last updated: 2016-11-01)</p>
+      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">J. Morgan Lieberthal</a>. All rights reserved. (Last updated: 2016-11-03)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

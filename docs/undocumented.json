@@ -1,6 +1,40 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 159,
+      "symbol": "RingBuffer.append(contentsOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 460,
+      "symbol": "CHUNK_SIZE",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 461,
+      "symbol": "LOW_THRESHOLD",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 462,
+      "symbol": "HIGH_THRESHOLD",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/morgan/projects/swift/RingBuffer/Sources/RingBuffer.swift",
+      "line": 465,
+      "symbol": "roundUpCapacity(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.free",
+      "warning": "undocumented"
+    }
   ],
-  "source_directory": "/Volumes/SSD2/projects/swift/RingBuffer"
+  "source_directory": "/Users/morgan/projects/swift/RingBuffer"
 }
