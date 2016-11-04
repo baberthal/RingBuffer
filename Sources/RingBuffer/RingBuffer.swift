@@ -21,36 +21,29 @@ import Dispatch
 /// - note: This class is thread-safe.
 ///
 /// - seealso: [Circular Buffer on Wikipedia](https://en.wikipedia.org/wiki/Circular_buffer)
-public final class RingBuffer {
-  /// Default buffer size.  Unsigned so the compiler can check that the 
-  /// capacity is greater than 0.
-  public static let defaultCapacity: UInt = 4096
-
-  /// Absolute maximum buffer size.  4 Terabytes on 64-bit, 2 Gigabytes on 32-bit.
-  public static let absoluteMaximumCapacity: UInt = RINGBUFFER_MAX_SIZE
-
-  /// The length of the buffer
-  public var count: Int {
-    return Int(availableData)
-  }
+public struct RingBuffer {
+  /// Default buffer size.
+  public static let defaultCapacity: Int = 4096
 
   /// The capacity of the buffer
-  public let capacity: UInt
+  public var capacity: Int {
+    return _storage.capacity
+  }
 
   /// The start position of the buffer
-  public private(set) var start: UInt = 0
+  public private(set) var start: Int = 0
 
   /// The end position of the buffer
-  public private(set) var end: UInt = 0
+  public private(set) var end: Int = 0
 
   /// The number (in bytes) of data that is available in this buffer
-  public var availableData: UInt {
+  public var availableData: Int {
     // obo?
     return (end) % (capacity - start)
   }
 
   /// The number (in bytes) of space that is available in this buffer
-  public var availableSpace: UInt {
+  public var availableSpace: Int {
     // obo?
     return capacity - end - 1
   }
@@ -62,7 +55,7 @@ public final class RingBuffer {
 
   /// Returns true if the buffer is empty, or if it contains 1 NULL byte
   public var isEmpty: Bool {
-    return availableData == 0 || (availableData == 1 && elementPointer.pointee == 0)
+    return availableData == 0
   }
 
   /// The base address of the buffer
@@ -72,17 +65,16 @@ public final class RingBuffer {
 
   // MARK: - Private Properties
 
-  /// The base address of the buffer.  This should not change
-  private var baseAddress: UnsafeMutablePointer<UInt8>!
+  /// The base address of the buffer.
+  private var baseAddress: UnsafeMutablePointer<UInt8>! {
+    return _storage.baseAddress!
+  }
 
   /// The end address of the buffer
   private var endAddress: UnsafeMutablePointer<UInt8> {
     return baseAddress.advanced(by: Int(end))
   }
 
-  /// The actual memory of the buffer
-  private var storagePointer: UnsafeMutableRawPointer!
-  
   /// A helper for finding the distance between our start address and end address
   private var distance: Int {
     return elementPointer.distance(to: endAddress)
@@ -91,31 +83,17 @@ public final class RingBuffer {
   /// The DispatchQueue that will synchronize access to the buffer
   private let dispatchQueue: DispatchQueue
 
+  /// The backing storage class
+  private var _storage: RingBufferStorage
+
   // MARK: - Initializers
 
   /// Create a new ring buffer with a given capacity
   ///
   /// - parameter capacity: The capacity of the new buffer, in bytes
-  public init(capacity: UInt = RingBuffer.defaultCapacity) {
-    self.capacity = roundUpCapacity(capacity) + 1
-
+  public init(capacity: Int = RingBuffer.defaultCapacity) {
     self.dispatchQueue = DispatchQueue(label: "ring-buffer.serial-queue")
-
-    self.storagePointer = UnsafeMutableRawPointer.allocate(
-      bytes: Int(self.capacity), alignedTo: MemoryLayout<UInt8>.alignment
-    )
-
-    self.baseAddress = self.storagePointer.initializeMemory(
-      as: UInt8.self, at: 0, count: Int(self.capacity), to: 0
-    )
-  }
-
-  /// Clean up our allocated memory when we are deinitialized
-  deinit {
-    self.baseAddress.deinitialize(count: Int(self.capacity))
-    self.storagePointer.deallocate(
-      bytes: Int(self.capacity), alignedTo: MemoryLayout<UInt8>.alignment
-    )
+    self._storage = RingBufferStorage(capacity: capacity)
   }
 
   // MARK: - Public Functions
@@ -125,11 +103,11 @@ public final class RingBuffer {
   /// - parameter byte: The byte to add to the buffer
   /// - note: This will silently fail if an error occurs.  
   ///   To raise the error, use one of the `write()` methods.
-  public func append(_ byte: UInt8) {
+  public mutating func append(_ byte: UInt8) {
     // mutable copy of `byte`
     var theByte = byte
 
-    withUnsafePointer(to: &theByte, { [unowned self] (bytePointer) in
+    withUnsafePointer(to: &theByte, { bytePointer in
       _ = try? self.write(from: bytePointer, count: 1)
     })
   }
@@ -140,8 +118,8 @@ public final class RingBuffer {
   /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
   /// - note: This will silently fail if an error occurs.
   ///   To raise the error, use one of the `write()` methods.
-  public func append(contentsOf bytes: ContiguousArray<UInt8>) {
-    bytes.withUnsafeBufferPointer { [unowned self] (bufferPointer: UnsafeBufferPointer<UInt8>) in
+  public mutating func append(contentsOf bytes: ContiguousArray<UInt8>) {
+    bytes.withUnsafeBufferPointer { (bufferPointer: UnsafeBufferPointer<UInt8>) in
       _ = try? self.write(from: bufferPointer)
     }
   }
@@ -151,8 +129,8 @@ public final class RingBuffer {
   /// - parameter bytes: The sequence of bytes to add to the buffer
   /// - note: This will silently fail if an error occurs.
   ///   To raise the error, use one of the `write()` methods.
-  public func append(contentsOf bytes: ContiguousArray<Int8>) {
-    bytes.withUnsafeBufferPointer { [unowned self] (pointerA: UnsafeBufferPointer<Int8>) in
+  public mutating func append(contentsOf bytes: ContiguousArray<Int8>) {
+    bytes.withUnsafeBufferPointer { (pointerA: UnsafeBufferPointer<Int8>) in
       pointerA.baseAddress!.withMemoryRebound(to: UInt8.self, capacity: pointerA.count, { pointerB in
         _ = try? self.write(from: pointerB, count: pointerA.count)
       })
@@ -165,7 +143,8 @@ public final class RingBuffer {
   /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
   /// - note: This will silently fail if an error occurs.
   ///   To raise the error, use one of the `write()` methods.
-  public func append<S: Sequence>(contentsOf: S) where S.Iterator.Element == UInt8 {
+  // FIXME: This should be optimized
+  public mutating func append<S: Sequence>(contentsOf: S) where S.Iterator.Element == UInt8 {
     for byte in contentsOf {
       self.append(byte)
     }
@@ -176,7 +155,7 @@ public final class RingBuffer {
   /// - parameter data: The data structure to append to the buffer
   /// - note: This will silently fail if an error occurs.
   ///   To raise the error, use one of the `write()` methods.
-  public func append(data: Data) {
+  public mutating func append(data: Data) {
     _ = try? self.write(from: data)
   }
   
@@ -188,11 +167,9 @@ public final class RingBuffer {
   /// - throws: RingBufferError if an error was encountered
   /// - returns: The number of bytes read
   @discardableResult
-  public func write(from bytes: UnsafePointer<UInt8>, count: Int) throws -> Int {
+  public mutating func write(from bytes: UnsafePointer<UInt8>, count: Int) throws -> Int {
     // can't write fewer than 0 bytes
     precondition(count >= 0, "You can't write 0 bytes to the buffer, son!")
-
-    let count = UInt(count)
 
     // reset the buffer if we have no available data
     if availableData == 0 { reset() }
@@ -217,7 +194,7 @@ public final class RingBuffer {
   /// - throws: RingBufferError if an error was encountered
   /// - returns: The number of bytes written into the buffer
   @discardableResult
-  public func write(from buffer: UnsafeBufferPointer<UInt8>) throws -> Int {
+  public mutating func write(from buffer: UnsafeBufferPointer<UInt8>) throws -> Int {
     return try write(from: buffer.baseAddress!, count: buffer.count)
   }
 
@@ -227,11 +204,11 @@ public final class RingBuffer {
   /// - throws: A RingBufferError if an error occured
   /// - returns: The number of bytes written to the buffer
   @discardableResult
-  public func write(string: String) throws -> Int {
+  public mutating func write(string: String) throws -> Int {
     let strlen = string.lengthOfBytes(using: .utf8)
-    return try string.withCString { [unowned self] (cstring) in
-      return try cstring.withMemoryRebound(to: UInt8.self, capacity: strlen) { [unowned self] in
-        return try self.write(from: $0, count: strlen)
+    return try string.withCString { cstring in
+      return try cstring.withMemoryRebound(to: UInt8.self, capacity: strlen) {
+        return try write(from: $0, count: strlen)
       }
     }
   }
@@ -242,7 +219,7 @@ public final class RingBuffer {
   /// - throws: RingBufferError if an error occurs
   /// - returns: the number of bytes written
   @discardableResult
-  public func write(from data: Data) throws -> Int {
+  public mutating func write(from data: Data) throws -> Int {
     return try data.withUnsafeBytes { (pointer: UnsafePointer<UInt8>) -> Int in
       return try write(from: pointer, count: data.count)
     }
@@ -256,14 +233,13 @@ public final class RingBuffer {
   /// - throws: RingBufferError if an error was encountered
   /// - returns: The number of bytes read
   @discardableResult
-  public func read(into data: inout Data, count: Int) throws -> Int {
-    let count = UInt(count)
+  public mutating func read(into data: inout Data, count: Int) throws -> Int {
     guard count <= availableData else {
       throw RingBufferError.insufficientData(requested: count, available: availableData)
     }
 
     return dispatchQueue.sync(execute: {
-      let buffer: UnsafeBufferPointer<UInt8> = getUnsafeBufferPointer(count: self.distance)
+      let buffer = UnsafeBufferPointer<UInt8>(start: self.elementPointer, count: self.distance)
 
       data.append(buffer)
 
@@ -281,7 +257,7 @@ public final class RingBuffer {
   /// 
   /// - parameter amount: The number of bytes to read
   /// - precondition: `amount` is greater than 0
-  public func gets(_ amount: UInt) throws -> String {
+  public mutating func gets(_ amount: Int) throws -> String {
     precondition(amount > 0, "`amount` must be greater than 0!")
 
     guard amount <= availableData else {
@@ -289,11 +265,12 @@ public final class RingBuffer {
     }
 
     return try dispatchQueue.sync(execute: {
-      let buffer: UnsafeBufferPointer<UInt8> = self.getUnsafeBufferPointer(count: Int(amount))
+      let buffer = UnsafeBufferPointer<UInt8>(start: self.elementPointer, count: amount)
+
       
       guard let result = String(bytes: buffer, encoding: .utf8),
-            UInt(result.lengthOfBytes(using: .utf8)) == amount else {
-              throw RingBufferError.conversionError
+                result.lengthOfBytes(using: .utf8) == amount else {
+                  throw RingBufferError.conversionError
       }
 
       self.commitRead(count: amount)
@@ -308,15 +285,6 @@ public final class RingBuffer {
       
       return result
     })
-  }
-
-  /// Get a string from the buffer.  This is a shortcut for `gets(UInt(myInt))`.
-  /// 
-  /// - parameter amount: The number of bytes to read
-  /// - precondition: `amount` is greater than 0
-  public func gets(_ amount: Int) throws -> String {
-    precondition(amount > 0)
-    return try gets(UInt(amount))
   }
 
   /// Calls a closure with a pointer to the buffer's contiguous storage.
@@ -347,11 +315,11 @@ public final class RingBuffer {
   /// - returns: The return value of the `body` closure parameter, if any.
   ///
   /// - seealso: `withUnsafeMutableBufferPointer`, `UnsafeBufferPointer`
-  public func withUnsafeBufferPointer<R>(
-    _ body: (UnsafeBufferPointer<UInt8>) throws -> R
-  ) rethrows -> R {
+  public func withUnsafeBufferPointer<ContentType, ResultType>(
+    _ body: (UnsafeBufferPointer<ContentType>) throws -> ResultType
+  ) rethrows -> ResultType {
     defer { _fixLifetime(self) }
-    return try body(getUnsafeBufferPointer(count: self.distance))
+    return try _storage.withUnsafeBufferPointer(body)
   }
 
   /// Calls the given closure with a pointer to the buffer's mutable contiguous
@@ -386,26 +354,26 @@ public final class RingBuffer {
   /// - returns: The return value of the `body` closure parameter, if any.
   ///
   /// - seealso: `withUnsafeBufferPointer`, `UnsafeMutableBufferPointer`
-  public func withUnsafeMutableBufferPointer<R>(
-    _ body: (UnsafeMutableBufferPointer<UInt8>) throws -> R
-  ) rethrows -> R {
+  public func withUnsafeMutableBufferPointer<ContentType, ResultType>(
+    _ body: (UnsafeMutableBufferPointer<ContentType>) throws -> ResultType
+  ) rethrows -> ResultType {
     defer { _fixLifetime(self) }
-    return try body(UnsafeMutableBufferPointer(start: self.elementPointer, count: self.distance))
+    return try _storage.withUnsafeMutableBufferPointer(body)
   }
 
   /// Access the bytes in the data.
   ///
   /// - warning: The byte pointer argument should not be stored and used
   ///   outside of the lifetime of the call to the closure.
-  public func withUnsafeBytes<ResultType>(
-    _ body: (UnsafePointer<UInt8>) throws -> ResultType
+  public func withUnsafeBytes<ContentType, ResultType>(
+    _ body: (UnsafePointer<ContentType>) throws -> ResultType
   ) rethrows -> ResultType {
     defer { _fixLifetime(self) }
-    return try body(UnsafePointer(self.elementPointer))
+    return try _storage.withUnsafeBytes(body)
   }
 
   /// Clear the buffer of any stored data
-  public func clear() {
+  public mutating func clear() {
     dispatchQueue.sync {
       self.commitRead(count: self.availableData)
     }
@@ -414,7 +382,7 @@ public final class RingBuffer {
   // MARK: - Private Functions
 
   /// Commit a write into the buffer, moving the `start` position
-  private func commitRead(count: UInt) {
+  private mutating func commitRead(count: Int) {
     self.start = (self.start + count) % self.capacity
     if self.start == self.end {
       self.reset()
@@ -422,19 +390,12 @@ public final class RingBuffer {
   }
 
   /// Commit a write into the buffer, moving the `end` position
-  private func commitWrite(count: UInt) {
+  private mutating func commitWrite(count: Int) {
     self.end = (self.end + count) % self.capacity
   }
 
-  /// Get an UnsafeBufferPointer to the storage of the RingBuffer
-  private func getUnsafeBufferPointer<T>(count: Int) -> UnsafeBufferPointer<T> {
-    return self.elementPointer.withMemoryRebound(to: T.self, capacity: count, { newStart in
-      return UnsafeBufferPointer(start: newStart, count: count)
-    })
-  }
-
   /// Reset the buffer
-  private func reset() {
+  private mutating func reset() {
     self.start = 0
     self.end = 0
   }
@@ -446,7 +407,7 @@ public final class RingBuffer {
 extension RingBuffer: CustomStringConvertible, CustomDebugStringConvertible, CustomReflectable {
   /// A human-readable description of the data
   public var description: String {
-    return "\(self.count) bytes"
+    return "\(self.availableData) bytes"
   }
 
   /// A human-readable debug description of the data
@@ -455,7 +416,7 @@ extension RingBuffer: CustomStringConvertible, CustomDebugStringConvertible, Cus
   }
 
   public var customMirror: Mirror {
-    let byteCount = self.count
+    let byteCount = self.availableData
     var children: [(label: String?, value: Any)] = []
     children.append((label: "count", value: byteCount))
 
@@ -481,56 +442,4 @@ extension RingBuffer {
   fileprivate var _ptr: UnsafeMutablePointer<UInt8> {
     fatalError()
   }
-}
-
-// MARK: - Implementation Helpers
-
-#if arch(x86_64) || arch(arm64) // we are on a 64-bit system
-  /// Absolute maximum buffer size: 4 TB on 64-bit.
-  fileprivate let RINGBUFFER_MAX_SIZE: UInt = (1 << 42) - 1
-
-  /// Chunk size of our memory allocations
-  fileprivate let CHUNK_SIZE:     UInt = 1 << 29
-
-  /// Low threshold of memory allocation
-  fileprivate let LOW_THRESHOLD:  UInt = 1 << 20
-
-  /// High threshold of memory allocation
-  fileprivate let HIGH_THRESHOLD: UInt = 1 << 32
-
-#elseif arch(arm) || arch(i386) // we are on a 32-bit system
-  /// Absolute maximum buffer size: 2 GB on 32-bit.
-  fileprivate let RINGBUFFER_MAX_SIZE: UInt = (1 << 31) - 1
-
-  /// Chunk size of our memory allocations
-  fileprivate let CHUNK_SIZE:     UInt = 1 << 26
-  
-  /// Low threshold of memory allocation
-  fileprivate let LOW_THRESHOLD:  UInt = 1 << 20
-  
-  /// High threshold of memory allocation
-  fileprivate let HIGH_THRESHOLD: UInt = 1 << 29
-#endif
-
-@inline(__always)
-fileprivate func roundUpCapacity(_ capacity: UInt) -> UInt {
-  let result: UInt
-
-  if capacity < 16 {
-    result = 16
-  } else if capacity < LOW_THRESHOLD {
-    /* up to 4x */
-    let idx = flsl(Int(capacity))
-    let power = idx + ((idx % 2 == 0) ? 0 : 1)
-    result = 1 << UInt(power)
-  } else if capacity < HIGH_THRESHOLD {
-    /* up to 2x */
-    result = 1 << UInt(flsl(Int(capacity)))
-  } else {
-    /* Round up to the nearest multiple of `CHUNK_SIZE` */
-    let newCapa = CHUNK_SIZE * (1 + (capacity >> UInt(flsl(Int(CHUNK_SIZE)) - 1)))
-    result = min(newCapa, RingBuffer.absoluteMaximumCapacity)
-  }
-
-  return result
 }
