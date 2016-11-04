@@ -8,84 +8,7 @@
 
 import Libc
 
-extension RingBufferStorage {
-  /// Represents the allocator used to allocate the storage
-  enum Allocator {
-    // MARK: - Enum Cases
-
-    /// Allocate memory using native Swift APIs
-    /// (i.e. `UnsafeMutableRawPointer.allocate(bytes:alignment:)`)
-    case swift
-
-    /// Allocate memory using `malloc()`
-    case malloc
-
-    /// Allocate memory using `calloc()`
-    case calloc
-
-    /// Allocate memory using `mmap()`, passing the file descriptor to map
-    case mmap(Int32)
-
-    /// Use a custom allocator
-    case custom(alloc: (Int) -> UnsafeMutableRawPointer, dealloc: (UnsafeMutableRawPointer, Int) -> Void)
-
-    // MARK: - Properties
-
-    /// Get the allocator function for the given allocator case
-    ///
-    /// - returns: a closure to allocate the bytes, that takes the number of bytes
-    ///   to be allocated.
-    fileprivate var _allocator: (Int) -> UnsafeMutableRawPointer {
-      switch self {
-      case .swift:
-        return {
-          UnsafeMutableRawPointer.allocate(bytes: $0, alignedTo: MemoryLayout<UInt8>.alignment)
-        }
-
-      case .malloc:
-        return { Libc.malloc($0) }
-
-      case .calloc:
-        return { Libc.calloc(1, $0) }
-
-      case .mmap(let fd):
-        return { Libc.mmap(nil, $0, PROT_READ, MAP_PRIVATE, fd, 0) }
-
-      case .custom(let b, _):
-        return { b($0) }
-      }
-    }
-
-    /// Get the associated deallocator for the given allocator case
-    ///
-    /// - returns: a closure to deallocate the bytes
-    fileprivate var _deallocator: (UnsafeMutableRawPointer, Int) -> Void {
-      switch self {
-      case .swift:
-        return { pointer, len in
-          pointer.deallocate(bytes: len, alignedTo: MemoryLayout<UInt8>.alignment)
-        }
-
-      case .malloc: fallthrough // falls through to the same deallocator for `calloc()`
-      case .calloc:
-        return { pointer, _ in
-          Libc.free(pointer)
-        }
-
-      case .mmap(_):
-        return { pointer, len in
-          _ = Libc.munmap(pointer, len)
-        }
-
-      case .custom(_, let b):
-        return { pointer, len in
-          b(pointer, len)
-        }
-      }
-    }
-  }
-}
-
+/// Storage for `RingBuffer`
 final class RingBufferStorage {
   /// Capacity of this storage instance, in bytes
   let capacity: Int
@@ -96,86 +19,33 @@ final class RingBufferStorage {
   /// Base address of the storage, as mapped to UInt8
   var baseAddress: UnsafeMutablePointer<UInt8>?
 
-  /// Allocator to allocate our memory
-  let allocator: Allocator
-
-  /// Flag to indicate if this class is responsible for clearing and deinitializing the memory
-  private var managingStorage = false
-
   /// Create an instance of `RingBufferStorage`, with a given `capacity`, using `allocator` to
   /// allocate the memory.
   ///
   /// - parameter capacity: The capacity of the storage to allocate
   ///
-  /// - note: `capacity` is rounded up to the nearest page size
-  init(capacity: Int, allocator: Allocator = .swift) {
-    self.capacity  = roundUpCapacity(capacity)
-    self.allocator = allocator
+  /// - note: `capacity` is rounded up to the nearest page size.
+  ///   To determine the actual capacity of the buffer, check the return value
+  ///   of `capacity`.
+  init(capacity: Int) {
+    self.capacity = roundUpCapacity(capacity) + 1
+
+    self.storagePointer = UnsafeMutableRawPointer.allocate(
+      bytes: self.capacity, alignedTo: MemoryLayout<UInt8>.alignment
+    )
+
+    self.baseAddress = self.storagePointer.initializeMemory(
+      as: UInt8.self, at: 0, count: self.capacity, to: 0
+    )
   }
 
   /// Deallocate our storage, if it exists, upon deinitialization
   deinit {
-    self.deallocate()
+    deallocate()
+    _fixLifetime(self)
   }
 
-  /// Allocate the storage's memory
-  ///
-  /// - parameter clear: Whether or not the storage at `self.storageAddress` should be
-  ///   initialized to all zeros. 
-  ///
-  /// - note: This is a no-op if `self.allocator` is `.calloc`, as
-  ///   `calloc()` initializes the memory zeros.
-  ///
-  /// - note: This is a no-op if `self.allocator` is `.custom`. If you choose to use
-  ///   a custom allocator, please initialize the memory yourself.
-  ///
-  /// - precondition: The memory has not yet been allocated
-  /// - postcondition: The memory at `self.storageAddress` is allocated
-  func allocate(shouldClear: Bool = true) {
-    // assert that we have not yet allocated our memory
-    precondition(self.storagePointer == nil, "Memory is already allocated!")
-
-    // if we initialize the storage, we should be responsible for deinitializing it
-    self.managingStorage = shouldClear
-
-    // do the memory allocation
-    self.storagePointer = self.allocator._allocator(self.capacity)
-
-    // make sure we set our base address before returning from this function
-    defer { self.setBaseAddress() }
-
-    // return if we don't want to zero the bytes
-    guard shouldClear else { return }
-
-    // if we get here, that means the class is responsible for managing its own memory
-
-    switch self.allocator {
-    case .swift: self.baseAddress = self.storagePointer.initializeMemory(as: UInt8.self, to: 0)
-    case .malloc: _ = Libc.memset(self.storagePointer, 0, self.capacity)
-    default: break
-    }
-  }
-
-  /// Deallocate this storage's memory
-  ///
-  /// - precondition: The memory is not initialized
-  /// 
-  /// - postcondition: The memory has been deallocated
-  /// - postcondition: `self.storagePointer` is `nil`
-  func deallocate() {
-    // return if our pointers are nil
-    guard self.storagePointer != nil, self.baseAddress != nil else { return }
-
-    if self.managingStorage {
-      self.baseAddress!.deinitialize(count: self.capacity)
-      self.baseAddress = nil
-    }
-    
-    self.allocator._deallocator(self.storagePointer, self.capacity)
-    self.storagePointer = nil
-  }
-
-  // MARK: - withUnsafe... 
+  // MARK: - withUnsafe...
 
   /// Calls a closure with a pointer to the buffer's contiguous storage.
   ///
@@ -287,12 +157,13 @@ final class RingBufferStorage {
     return UnsafeMutableRawPointer(self.storagePointer)
   }
 
-  /// Set the base address of the storage
-  private func setBaseAddress() {
-    // do nothing if we already set the base address
-    guard self.baseAddress == nil else { return }
+  /// Deallocate the storage memory, deinitializing if it is already initialized
+  private func deallocate() {
+    if let baseAddress = self.baseAddress {
+      baseAddress.deinitialize(count: self.capacity)
+    }
 
-    self.baseAddress = self.storagePointer.assumingMemoryBound(to: UInt8.self)
+    self.storagePointer.deallocate(bytes: self.capacity, alignedTo: MemoryLayout<UInt8>.alignment)
   }
 }
 
