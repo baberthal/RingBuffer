@@ -33,11 +33,11 @@ class RingBufferTests: XCTestCase {
     let _ = try! ringBuffer.write(string: moreData)
     let moreDataLen = moreData.lengthOfBytes(using: .utf8)
 
-    let andBackAgain = try! ringBuffer.gets(UInt(bytesWritten))
+    let andBackAgain = try! ringBuffer.gets(bytesWritten)
     XCTAssert(andBackAgain == testString, "Got the wrong string back. " +
       "Got \(andBackAgain.debugDescription), expected \(testString.debugDescription)")
 
-    let someMoreBack = try! ringBuffer.gets(UInt(moreDataLen))
+    let someMoreBack = try! ringBuffer.gets(moreDataLen)
     XCTAssert(moreData == someMoreBack, "Got the wrong string back. " +
       "Got \(someMoreBack.debugDescription), expected \(moreData.debugDescription)")
   }
@@ -90,10 +90,10 @@ class RingBufferTests: XCTestCase {
 
     let idx = testString.lengthOfBytes(using: .utf8)
     do {
-      let _ = try ringBuffer.gets(UInt(idx + 4))
+      let _ = try ringBuffer.gets(idx + 4)
     } catch let error as RingBufferError {
       switch error {
-      case .insufficientData(requested: UInt(idx + 4), available: UInt(idx)): XCTAssert(true)
+      case .insufficientData(requested: idx + 4, available: idx): XCTAssert(true)
       default: XCTFail("Wrong error")
       }
     } catch {
@@ -104,7 +104,7 @@ class RingBufferTests: XCTestCase {
   func testWriteFromData() {
     let dummyData = Data(bytes: [1, 3, 4, 2, 1])
     try! ringBuffer.write(from: dummyData)
-    XCTAssert(ringBuffer.availableData == UInt(dummyData.count))
+    XCTAssert(ringBuffer.availableData == dummyData.count)
   }
 
   func testWriteFromBufferPointer() {
@@ -112,7 +112,7 @@ class RingBufferTests: XCTestCase {
     _ = dummyData.withUnsafeBufferPointer { bufPointer in
       try! ringBuffer.write(from: bufPointer)
     }
-    XCTAssert(ringBuffer.availableData == UInt(dummyData.count), "Wrong number of bytes written")
+    XCTAssert(ringBuffer.availableData == dummyData.count, "Wrong number of bytes written")
   }
 
   func testReadIntoData() {
@@ -122,7 +122,7 @@ class RingBufferTests: XCTestCase {
     let strLen = testString.lengthOfBytes(using: .utf8)
     try! ringBuffer.write(string: testString)
 
-    XCTAssert(ringBuffer.availableData == UInt(strLen), "Wrong number of bytes written")
+    XCTAssert(ringBuffer.availableData == strLen, "Wrong number of bytes written")
 
     try! ringBuffer.read(into: &data, count: Int(ringBuffer.availableData))
 
@@ -137,13 +137,13 @@ class RingBufferTests: XCTestCase {
     let strLen = testString.lengthOfBytes(using: .utf8)
     try! ringBuffer.write(string: testString)
 
-    XCTAssert(ringBuffer.availableData == UInt(strLen), "Wrong number of bytes written")
+    XCTAssert(ringBuffer.availableData == strLen, "Wrong number of bytes written")
 
     do {
       try ringBuffer.read(into: &data, count: strLen + 4)
     } catch let error as RingBufferError {
       switch error {
-      case .insufficientData(requested: UInt(strLen + 4), available: UInt(strLen)): XCTAssert(true)
+      case .insufficientData(requested: strLen + 4, available: strLen): XCTAssert(true)
       default: XCTFail("Wrong error")
       }
     } catch {
@@ -153,11 +153,10 @@ class RingBufferTests: XCTestCase {
 
   func testWithUnsafeBufferPointer() {
     let testString = "hello"
-    let strLen = testString.lengthOfBytes(using: .utf8)
     try! ringBuffer.write(string: testString)
 
-    ringBuffer.withUnsafeBufferPointer { bufPointer in
-      XCTAssert(bufPointer.count == strLen, "Wrong length of bufPointer")
+    ringBuffer.withUnsafeBufferPointer { (bufPointer: UnsafeBufferPointer<UInt8>) in
+      XCTAssert(bufPointer.first! == 0x0068, "Wrong first element")
     }
   }
 
@@ -167,13 +166,12 @@ class RingBufferTests: XCTestCase {
     let strLen = testString.lengthOfBytes(using: .utf8)
     try! ringBuffer.write(string: testString)
 
-    ringBuffer.withUnsafeMutableBufferPointer { bufPointer in
-      XCTAssert(bufPointer.count == strLen, "Wrong length of bufPointer")
+    ringBuffer.withUnsafeMutableBufferPointer { (bufPointer: UnsafeMutableBufferPointer<UInt8>) in
       XCTAssert(bufPointer.baseAddress!.pointee == 0x0068, "Wrong first element")
       bufPointer.baseAddress!.pointee = 0x0079
     }
 
-    let back = try! ringBuffer.gets(UInt(strLen))
+    let back = try! ringBuffer.gets(strLen)
     XCTAssert(back == "yello", "Should have mutated the buffer")
   }
 
@@ -199,11 +197,11 @@ class RingBufferTests: XCTestCase {
 
     ringBuffer.append(contentsOf: testData)
 
-    XCTAssert(ringBuffer.availableData == UInt(testData.count),
+    XCTAssert(ringBuffer.availableData == testData.count,
               "buffer should have 1 byte available, not \(ringBuffer.availableData)")
     XCTAssertFalse(ringBuffer.isEmpty, "Buffer should not be empty")
 
-    let back = try! ringBuffer.gets(UInt(strlen))
+    let back = try! ringBuffer.gets(strlen)
     XCTAssert(back == testString, "Wrong string back: \(back) vs \(testString)")
 
     XCTAssert(ringBuffer.isEmpty, "Buffer should be empty: has \(ringBuffer.availableData) bytes")
@@ -214,7 +212,7 @@ class RingBufferTests: XCTestCase {
     XCTAssertTrue(ringBuffer.isEmpty, "Buffer should be empty")
 
     ringBuffer.append(contentsOf: testData)
-    XCTAssert(ringBuffer.availableData == UInt(testData.count),
+    XCTAssert(ringBuffer.availableData == testData.count,
               "Wrong number of bytes written \(ringBuffer.availableData)")
 
     ringBuffer.clear()
