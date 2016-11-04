@@ -12,13 +12,13 @@ public enum RingBufferError: Swift.Error {
   ///
   /// - requested: The amount of space that was requested
   /// - available: The number of bytes that are available
-  case insufficientSpace(requested: UInt, available: UInt)
+  case insufficientSpace(requested: Int, available: Int)
 
   /// There is insufficient data in the buffer
   ///
   /// - requested: The amount of space that was requested
   /// - available: The number of bytes that are available
-  case insufficientData(requested: UInt, available: UInt)
+  case insufficientData(requested: Int, available: Int)
 
   /// Represents an error that occured while converting a string to UTF8
   case conversionError
