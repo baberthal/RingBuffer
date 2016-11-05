@@ -160,7 +160,6 @@ class RingBufferTests: XCTestCase {
     }
   }
 
-
   func testWithUnsafeMutableBufferPointer() {
     let testString = "hello"
     let strLen = testString.lengthOfBytes(using: .utf8)
@@ -175,11 +174,15 @@ class RingBufferTests: XCTestCase {
     XCTAssert(back == "yello", "Should have mutated the buffer")
   }
 
-  func testAppendByte() {
-    let testData = "h".utf8
+  func testAppendRawBytes() {
+    let testData = UnsafeMutableRawPointer.allocate(
+      bytes: 1, alignedTo: MemoryLayout<UInt8>.alignment
+    )
+    testData.initializeMemory(as: UInt8.self, to: "h".utf8.first!)
+
     XCTAssert(ringBuffer.isEmpty, "Ring buffer should be empty")
 
-    ringBuffer.append(testData.first!)
+    ringBuffer.append(testData, count: 1)
 
     XCTAssert(ringBuffer.availableData == 1,
               "buffer should have 1 byte available (has \(ringBuffer.availableData))")
@@ -192,7 +195,7 @@ class RingBufferTests: XCTestCase {
   func testAppendByteSequence() {
     let testString = "hello"
     let strlen = testString.lengthOfBytes(using: .utf8)
-    let testData = testString.utf8
+    let testData = ContiguousArray(testString.utf8)
     XCTAssert(ringBuffer.isEmpty, "Ring buffer should be empty")
 
     ringBuffer.append(contentsOf: testData)
@@ -205,6 +208,47 @@ class RingBufferTests: XCTestCase {
     XCTAssert(back == testString, "Wrong string back: \(back) vs \(testString)")
 
     XCTAssert(ringBuffer.isEmpty, "Buffer should be empty: has \(ringBuffer.availableData) bytes")
+  }
+
+  func testAppendData() {
+    // 0x005a == "Z"
+    let dummyData = Data(repeating: 0x005a, count: 16)
+    XCTAssert(ringBuffer.isEmpty)
+
+    ringBuffer.append(dummyData)
+    XCTAssert(ringBuffer.availableData == 16)
+    XCTAssert(ringBuffer.count == ringBuffer.availableData)
+
+    // now test getting it back again
+    var returnData = Data(capacity: 16)
+    try! ringBuffer.read(into: &returnData, count: 16)
+
+    let string = String(data: returnData, encoding: .utf8)!
+    XCTAssert(string.utf8.count == 16)
+    XCTAssert(string == "ZZZZZZZZZZZZZZZZ")
+  }
+
+  func testStringConvertible() {
+    let dummyData = Data(repeating: 0x005a, count: 16)
+    XCTAssert(ringBuffer.isEmpty)
+
+    ringBuffer.append(dummyData)
+
+    XCTAssert(ringBuffer.description == "16 bytes")
+    XCTAssert(ringBuffer.debugDescription == ringBuffer.description)
+  }
+
+  func testCustomMirror() {
+    let dummyData = Data(repeating: 0x005a, count: 16)
+    XCTAssert(ringBuffer.isEmpty)
+    ringBuffer.append(dummyData)
+
+    let mirror = ringBuffer.customMirror
+    XCTAssert(mirror.displayStyle! == .struct)
+    XCTAssert(mirror.children.count == 2)
+
+    debugPrint(mirror)
+    debugPrint(mirror.children)
   }
 
   func testReset() {
