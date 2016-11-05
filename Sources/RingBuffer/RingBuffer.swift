@@ -383,9 +383,11 @@ public struct RingBuffer {
   }
 
   /// Clear the buffer of any stored data
-  public mutating func clear() {
+  ///
+  /// - parameter upTo: The number of bytes to clear from the buffer.  Defaults to all of it.
+  public mutating func clear(upTo: Int? = nil) {
     dispatchQueue.sync {
-      self.commitRead(count: self.availableData)
+      self.commitRead(count: upTo ?? self.availableData)
     }
   }
 
