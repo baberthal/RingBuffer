@@ -436,7 +436,7 @@ extension RingBuffer: CustomStringConvertible, CustomDebugStringConvertible, Cus
       children.append((label: "pointer", value: bytes))
     }
 
-    let m = Mirror(self, children: children, displayStyle: Mirror.DisplayStyle.struct)
+    let m = Mirror(self, children: children, displayStyle: .struct)
     return m
   }
 }
