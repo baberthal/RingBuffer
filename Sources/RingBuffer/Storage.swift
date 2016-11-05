@@ -24,9 +24,8 @@ final class RingBufferStorage {
   ///
   /// - parameter capacity: The capacity of the storage to allocate
   ///
-  /// - note: `capacity` is rounded up to the nearest page size.
-  ///   To determine the actual capacity of the buffer, check the return value
-  ///   of `capacity`.
+  /// - note: `capacity` is rounded up to the nearest power of 2.  To determine 
+  ///   the actual capacity of the buffer, check the return value of `capacity`.
   init(capacity: Int) {
     self.capacity = roundUpCapacity(capacity) + 1
 
@@ -209,7 +208,8 @@ fileprivate func roundUpCapacity(_ capacity: Int) -> Int {
     result = 1 << Int(idx + ((idx % 2 == 0) ? 0 : 1))
   } else if capacity < HIGH_THRESHOLD {
     // up to 2x
-    result = 1 << Int(flsl(capacity))
+    let shift = Int(flsl(capacity))
+    result = 1 << shift
   } else {
     // round up to the nearest multiple of `CHUNK_SIZE`
     let rounded = CHUNK_SIZE * (1 + (capacity >> Int(flsl(CHUNK_SIZE)) - 1))

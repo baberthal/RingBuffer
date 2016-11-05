@@ -9,6 +9,8 @@
 import Foundation
 import Dispatch
 
+// MARK: RingBuffer
+
 /// An implementation of a Circular Buffer.
 ///
 /// The ring buffer is agnostic about the data type it stores, and deals
@@ -24,6 +26,8 @@ import Dispatch
 public struct RingBuffer {
   /// Default buffer size.
   public static let defaultCapacity: Int = 4096
+
+  // MARK: - Public Properties 
 
   /// The capacity of the buffer
   public var capacity: Int {
@@ -103,72 +107,73 @@ public struct RingBuffer {
 
   // MARK: - Public Functions
 
-  /// Append a byte to the ring buffer
+  /// Append bytes to the buffer.
   ///
-  /// - parameter byte: The byte to add to the buffer
-  /// - note: This will silently fail if an error occurs.  
-  ///   To raise the error, use one of the `write()` methods.
-  public mutating func append(_ byte: UInt8) {
-    // mutable copy of `byte`
-    var theByte = byte
-
-    withUnsafePointer(to: &theByte, { bytePointer in
-      _ = try? self.write(from: bytePointer, count: 1)
-    })
-  }
-
-  /// Append a sequence of bytes to the ring buffer
+  /// - parameter bytes: A pointer to the bytes to copy into the data.
+  /// - parameter count: The number of bytes to copy.
   ///
-  /// - parameter bytes: The sequence of bytes to add to the buffer
-  /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
-  /// - note: This will silently fail if an error occurs.
-  ///   To raise the error, use one of the `write()` methods.
-  public mutating func append(contentsOf bytes: ContiguousArray<UInt8>) {
-    bytes.withUnsafeBufferPointer { (bufferPointer: UnsafeBufferPointer<UInt8>) in
-      _ = try? self.write(from: bufferPointer)
+  /// - precondition: `count > 0 && count <= self.availableSpace`
+  ///
+  /// - warning: This method does not do any bounds checking, so be sure that
+  ///   `count` does not exceed `availableSpace`
+  public mutating func append(_ bytes: UnsafeRawPointer, count: Int) {
+    precondition(count > 0)
+    if availableData == 0 { reset() }
+    precondition(count <= availableSpace, "Not enough space in the buffer")
+
+    let bytePointer = bytes.bindMemory(to: UInt8.self, capacity: count)
+
+    self.dispatchQueue.sync {
+      self.endAddress.assign(from: bytePointer, count: count)
+      self.commitWrite(count: count)
     }
   }
-
-  /// Append a sequence of bytes to the ring buffer
+  
+  /// Append a buffer to the buffer.
   ///
-  /// - parameter bytes: The sequence of bytes to add to the buffer
-  /// - note: This will silently fail if an error occurs.
-  ///   To raise the error, use one of the `write()` methods.
-  public mutating func append(contentsOf bytes: ContiguousArray<Int8>) {
-    bytes.withUnsafeBufferPointer { (pointerA: UnsafeBufferPointer<Int8>) in
-      pointerA.baseAddress!.withMemoryRebound(to: UInt8.self, capacity: pointerA.count, { pointerB in
-        _ = try? self.write(from: pointerB, count: pointerA.count)
-      })
-    }
+  /// - parameter buffer: The buffer of bytes to append.  The size is calculated
+  ///   from `SourceType` and `buffer.count`.
+  ///
+  /// - precondition: `buffer.count <= self.availableSpace`
+  ///
+  /// - warning: This method does not do any bounds checking, so be sure that
+  ///   `buffer.count` does not exceed `self.availableSpace`
+  public mutating func append<SourceType>(_ buffer: UnsafeBufferPointer<SourceType>) {
+    self.append(buffer.baseAddress!, count: buffer.count * MemoryLayout<SourceType>.stride)
   }
 
-  /// Append a sequence of bytes to the ring buffer
+  /// Append a sequence of bytes to the ring buffer.
   ///
-  /// - parameter bytes: The sequence of bytes to add to the buffer
-  /// - precondition: MemoryLayout<S.Iterator.Element>.size == MemoryLayout<UInt8>.size
-  /// - note: This will silently fail if an error occurs.
-  ///   To raise the error, use one of the `write()` methods.
-  // FIXME: This should be optimized
-  public mutating func append<S: Sequence>(contentsOf: S) where S.Iterator.Element == UInt8 {
-    for byte in contentsOf {
-      self.append(byte)
+  /// - parameter contiguous: The sequence of bytes to add to the buffer.  Internally,
+  ///   this method calls `append<T>(_:UnsafeBufferPointer<T>)`.
+  ///
+  /// - precondition: `count > 0 && count <= self.availableSpace`
+  ///
+  /// - warning: This method does not do any bounds checking, so be sure that
+  ///   `contigous.count` does not exceed `self.availableSpace`
+  public mutating func append<SourceType>(contentsOf contiguous: ContiguousArray<SourceType>) {
+    contiguous.withUnsafeBufferPointer { bufferPointer in
+      self.append(bufferPointer)
     }
   }
 
   /// Append the contents of a `Data` structure to the buffer
   ///
   /// - parameter data: The data structure to append to the buffer
-  /// - note: This will silently fail if an error occurs.
-  ///   To raise the error, use one of the `write()` methods.
-  public mutating func append(data: Data) {
-    _ = try? self.write(from: data)
+  ///
+  /// - warning: This method does not do any bounds checking, so be sure that
+  ///   `data.count` does not exceed `self.availableSpace`
+  public mutating func append(_ data: Data) {
+    data.withUnsafeBytes { (dataPointer: UnsafePointer<UInt8>) in
+      self.append(dataPointer, count: data.count)
+    }
   }
   
   /// Write into the buffer, given pointer data and length
   ///
   /// - parameter from: The bytes to write into the buffer
-  /// - parameter length: The number of bytes to write into the buffer
-  /// - precondition: `count >= 0`
+  /// - parameter count: The number of bytes to write into the buffer
+  /// - precondition: `count > 0`
   /// - throws: RingBufferError if an error was encountered
   /// - returns: The number of bytes read
   @discardableResult
@@ -431,20 +436,5 @@ extension RingBuffer: CustomStringConvertible, CustomDebugStringConvertible, Cus
 
     let m = Mirror(self, children: children, displayStyle: Mirror.DisplayStyle.struct)
     return m
-  }
-}
-
-// MARK: - Deprecated Methods
-
-extension RingBuffer {
-  @available(*, unavailable, renamed: "count")
-  public var length: Int {
-    get { fatalError() }
-    set { fatalError() }
-  }
-
-  @available(*, unavailable, renamed: "baseAddress")
-  fileprivate var _ptr: UnsafeMutablePointer<UInt8> {
-    fatalError()
   }
 }
