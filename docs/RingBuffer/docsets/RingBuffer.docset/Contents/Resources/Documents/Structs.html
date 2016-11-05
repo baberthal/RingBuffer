@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Classes  Reference</title>
+    <title>Structs  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
   <body>
 
 
-    <a title="Classes  Reference"></a>
+    <a title="Structs  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -34,7 +34,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">RingBuffer Reference</a>
       <img class="carat" src="img/carat.png" />
-      Classes  Reference
+      Structs  Reference
     </p>
 
     <div class="content-wrapper">
@@ -70,8 +70,8 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Classes</h1>
-            <p>The following classes are available globally.</p>
+            <h1>Structs</h1>
+            <p>The following structs are available globally.</p>
 
           </div>
         </section>
@@ -79,13 +79,20 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/RingBuffer"></a>
+                <a name="//apple_ref/swift/Section/RingBuffer" class="dashAnchor"></a>
+                <a href="#/RingBuffer">
+                  <h3 class="section-name">RingBuffer</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:C10RingBuffer17RingBufferStorage"></a>
-                    <a name="//apple_ref/swift/Class/RingBufferStorage" class="dashAnchor"></a>
-                    <a class="token" href="#/s:C10RingBuffer17RingBufferStorage">RingBufferStorage</a>
+                    <a name="/s:V10RingBuffer10RingBuffer"></a>
+                    <a name="//apple_ref/swift/Struct/RingBuffer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:V10RingBuffer10RingBuffer">RingBuffer</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -93,20 +100,43 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Storage for <code><a href="Structs/RingBuffer.html">RingBuffer</a></code></p>
+                        <p>An implementation of a Circular Buffer.</p>
 
-                        <a href="Classes/RingBufferStorage.html" class="slightly-smaller">See more</a>
+<p>The ring buffer is agnostic about the data type it stores, and deals
+directly with bytes.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>The buffer internally rounds up <code>capacity</code> to the nearest page size. 
+To determine the actual capacity of the buffer, check the return value of <code>capacity</code>
+after initialization.</p>
+
+</div>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p>This class is thread-safe.</p>
+
+</div>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><a href="https://en.wikipedia.org/wiki/Circular_buffer">Circular Buffer on Wikipedia</a></p>
+
+</div>
+
+                        <a href="Structs/RingBuffer.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">RingBufferStorage</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">RingBuffer</span></code></pre>
 
                         </div>
                       </div>
                       <div class="slightly-smaller">
-                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L12-L167">Show on GitHub</a>
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/RingBuffer.swift#L26-L412">Show on GitHub</a>
                       </div>
                     </section>
                   </div>

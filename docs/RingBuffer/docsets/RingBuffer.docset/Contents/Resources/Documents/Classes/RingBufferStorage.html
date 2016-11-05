@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RingBufferStorage Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/RingBufferStorage" class="dashAnchor"></a>
+
+    <a title="RingBufferStorage Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          RingBuffer Docs
+        </a>
+         (100% documented)
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/baberthal/RingBuffer">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">RingBuffer Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      RingBufferStorage Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RingBufferStorage.html">RingBufferStorage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RingBufferError.html">RingBufferError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structs</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/RingBuffer.html">RingBuffer</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>RingBufferStorage</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">RingBufferStorage</span></code></pre>
+
+                </div>
+              </div>
+            <p>Storage for <code><a href="../Structs/RingBuffer.html">RingBuffer</a></code></p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer17RingBufferStorage8capacitySi"></a>
+                    <a name="//apple_ref/swift/Property/capacity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer17RingBufferStorage8capacitySi">capacity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Capacity of this storage instance, in bytes</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">let</span> <span class="nv">capacity</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L14">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer17RingBufferStorage14storagePointerGSQSv_"></a>
+                    <a name="//apple_ref/swift/Property/storagePointer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer17RingBufferStorage14storagePointerGSQSv_">storagePointer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Pointer to our allocated memory</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">storagePointer</span><span class="p">:</span> <span class="kt">UnsafeMutableRawPointer</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L17">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC10RingBuffer17RingBufferStorage11baseAddressGSqGSpVs5UInt8__"></a>
+                    <a name="//apple_ref/swift/Property/baseAddress" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC10RingBuffer17RingBufferStorage11baseAddressGSqGSpVs5UInt8__">baseAddress</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Base address of the storage, as mapped to UInt8</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="k">var</span> <span class="nv">baseAddress</span><span class="p">:</span> <span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">UInt8</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L20">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStoragecFT8capacitySi_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(capacity:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStoragecFT8capacitySi_S0_">init(capacity:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an instance of <code>RingBufferStorage</code>, with a given <code><a href="../Classes/RingBufferStorage.html#/s:vC10RingBuffer17RingBufferStorage8capacitySi">capacity</a></code>, using <code>allocator</code> to
+allocate the memory.</p>
+
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    <p><code><a href="../Classes/RingBufferStorage.html#/s:vC10RingBuffer17RingBufferStorage8capacitySi">capacity</a></code> is rounded up to the nearest power of 2.  To determine 
+the actual capacity of the buffer, check the return value of <code><a href="../Classes/RingBufferStorage.html#/s:vC10RingBuffer17RingBufferStorage8capacitySi">capacity</a></code>.</p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="nf">init</span><span class="p">(</span><span class="nv">capacity</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>capacity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The capacity of the storage to allocate</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L29-L39">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStoraged"></a>
+                    <a name="//apple_ref/swift/Method/deinit" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStoraged">deinit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Deallocate our storage, if it exists, upon deinitialization</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">deinit</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L42-L45">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/withUnsafe..."></a>
+                <a name="//apple_ref/swift/Section/withUnsafe..." class="dashAnchor"></a>
+                <a href="#/withUnsafe...">
+                  <h3 class="section-name">withUnsafe...</h3>
+                </a>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStorage23withUnsafeBufferPointeru0_rFzFzGSRx_q_q_"></a>
+                    <a name="//apple_ref/swift/Method/withUnsafeBufferPointer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStorage23withUnsafeBufferPointeru0_rFzFzGSRx_q_q_">withUnsafeBufferPointer(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Calls a closure with a pointer to the buffer&rsquo;s contiguous storage.</p>
+
+<p>The UnsafeBufferPointer passed to the block will begin at the start address
+and continue for the entire capacity of the storage, even if the elements are
+nil.</p>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><code>withUnsafeMutableBufferPointer</code>, <code>UnsafeBufferPointer</code></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="n">withUnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="p">,</span> <span class="kt">ResultType</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeBufferPointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span>
+  <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>body</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure with an <code>UnsafeBufferPointer</code> parameter that points to the contiguous storage.  If <code>body</code> has a return value, it is used as the return value for the <code>withUnsafeBufferPointer(_:)</code> method.  The pointer argument is valid only for the duration of the closure’s execution.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The return value of the <code>body</code> closure parameter, if any.</p>
+
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L64-L75">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStorage30withUnsafeMutableBufferPointeru0_rFzFzGSrx_q_q_"></a>
+                    <a name="//apple_ref/swift/Method/withUnsafeMutableBufferPointer(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStorage30withUnsafeMutableBufferPointeru0_rFzFzGSrx_q_q_">withUnsafeMutableBufferPointer(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Calls a closure with a pointer to the buffer&rsquo;s mutable contiguous storage.</p>
+
+<p>The UnsafeBufferPointer passed to the block will begin at the start address
+and continue for the entire capacity of the storage, even if the elements are
+nil.</p>
+
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Do not rely on anything about <code>self</code> (the buffer that is the
+target of this method) during the execution of the <code>body</code> closure: It
+may not appear to have its correct value.  Instead, use only the
+<code>UnsafeMutableBufferPointer</code> argument to <code>body</code>.</p>
+
+</div>
+
+<div class="aside aside-seealso">
+    <p class="aside-title">Seealso</p>
+    <p><code>withUnsafeBufferPointer</code>, <code>UnsafeMutableBufferPointer</code>,
+<code>withUnsafeBytes</code>, <code>withUnsafeMutableBytes</code></p>
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="n">withUnsafeMutableBufferPointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="p">,</span> <span class="kt">ResultType</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeMutableBufferPointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span>
+  <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>body</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure with an <code>UnsafeMutableBufferPointer</code> parameter that points to the contiguous storage for the buffer. If <code>body</code> has a return value, it is used as the return value for the <code>withUnsafeMutableBufferPointer(_:)</code> method. The pointer argument is valid only for the duration of the closure’s execution.</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The return value of the <code>body</code> closure parameter, if any.</p>
+
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L98-L110">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStorage15withUnsafeBytesu0_rFzFzGSPx_q_q_"></a>
+                    <a name="//apple_ref/swift/Method/withUnsafeBytes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStorage15withUnsafeBytesu0_rFzFzGSPx_q_q_">withUnsafeBytes(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Access the bytes in the data.</p>
+
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    The byte pointer argument should not be stored and used
+outside of the lifetime of the call to the closure.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="n">withUnsafeBytes</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="p">,</span> <span class="kt">ResultType</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafePointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span>
+  <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L116-L127">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC10RingBuffer17RingBufferStorage22withUnsafeMutableBytesu0_rFzFzGSpx_q_q_"></a>
+                    <a name="//apple_ref/swift/Method/withUnsafeMutableBytes(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC10RingBuffer17RingBufferStorage22withUnsafeMutableBytesu0_rFzFzGSpx_q_q_">withUnsafeMutableBytes(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Mutate the bytes in the data.</p>
+
+<p>This function assumes that you are mutating the contents.
+- warning: The byte pointer argument should not be stored and used 
+  outside of the lifetime of the call to the closure.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">func</span> <span class="n">withUnsafeMutableBytes</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="p">,</span> <span class="kt">ResultType</span><span class="o">&gt;</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="p">(</span><span class="kt">UnsafeMutablePointer</span><span class="o">&lt;</span><span class="kt">ContentType</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span>
+  <span class="p">)</span> <span class="k">rethrows</span> <span class="o">-&gt;</span> <span class="kt">ResultType</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div class="slightly-smaller">
+                        <a href="https://github.com/baberthal/RingBuffer/tree/master/Sources/RingBuffer/Storage.swift#L134-L145">Show on GitHub</a>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2016 <a class="link" href="" target="_blank" rel="external">J. Morgan Lieberthal</a>. All rights reserved. (Last updated: 2016-11-05)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
