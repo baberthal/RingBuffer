@@ -30,6 +30,11 @@ public struct RingBuffer {
     return _storage.capacity
   }
 
+  /// The number of bytes currently stored in the buffer
+  public var count: Int {
+    return availableData
+  }
+
   /// The start position of the buffer
   public private(set) var start: Int = 0
 
